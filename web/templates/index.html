@@ -6,7 +6,7 @@
 </head>
 <body>
 
-	hellor world.
+	hellor world. Visits: <span id="visits">{{visits}}</span>
 </body>
 <script type="text/javascript">
 	
@@ -16,10 +16,16 @@
 	connection.onopen = function (session) {
 
 		function onevent(args) {
-	      
-	     console.log("hello")
+
+			element = document.getElementById('visits');
+			console.log(element);
+			element.textContent  = args[0];
+
+	   	   
+	     console.log("hello");
+	     console.log(args);
 	   	}
-	   	session.subscribe('com.myapp.hello', onevent);
+	   	session.subscribe('com.example.onvisit', onevent);
 
 	};
 

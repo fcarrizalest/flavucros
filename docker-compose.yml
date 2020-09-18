@@ -2,6 +2,8 @@ version: '3'
 services:
   web:
     build: ./web
+    depends_on:
+      - crossbar
     ports:
       - "5000:5000"
     volumes:
