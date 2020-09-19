@@ -8,8 +8,6 @@ services:
       - "5000:5000"
     volumes:
       - ./web:/code
-    environment:
-      FLASK_ENV: development
   crossbar:
     image: "crossbario/crossbar"
     ports:
