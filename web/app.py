@@ -35,7 +35,7 @@ def do_post(request):
 @webapp.route('/')
 def home(request):
     webapp.visits += 1
-    wampapp.session.publish('com.example.msg', webapp.visits)
+    wampapp.session.publish('com.example.msg', webapp.msgs)
     page = webapp.templates.get_template('index.html')
     return page.render(visits=webapp.visits)
 
