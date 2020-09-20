@@ -3,33 +3,28 @@
 <head>
 	<title></title>
 	<script type="text/javascript" src="http://localhost:8080/js/autobahn.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+
 </head>
 <body>
+	{% raw %}
+	<fieldset id="app" >
+		<legend>{{title}}</legend>
+		<div id="container">
+			<ul>
+				<li>Listado</li>
+				<li v-for="msg in msgs">
+				    {{ msg.text }}
+				  </li>
+			</ul>
 
-	hellor world. Visits: <span id="visits">{{visits}}</span>
+			<div id="input">
+				<textarea v-model="newMsgText" ></textarea><button v-on:click="send" >Enviar</button>
+			</div>
+			Status: {{status}}
+		</div>
+	</fieldset>
+	{% endraw %}
 </body>
-<script type="text/javascript">
-	
-
-	var connection = new autobahn.Connection({url: 'ws://localhost:8080/ws', realm: 'realm1'});
-
-	connection.onopen = function (session) {
-
-		function onevent(args) {
-
-			element = document.getElementById('visits');
-			console.log(element);
-			element.textContent  = args[0];
-
-	   	   
-	     console.log("hello");
-	     console.log(args);
-	   	}
-	   	session.subscribe('com.example.onvisit', onevent);
-
-	};
-
-	connection.open();
-
-</script>
+<script type="text/javascript" src="/static/app.js"></script>
 </html>
