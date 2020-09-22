@@ -8,23 +8,12 @@
 </head>
 <body>
 	{% raw %}
-	<fieldset id="app" >
-		<legend>{{title}}</legend>
-		<div id="container">
-			<ul>
-				<li>Listado</li>
-				<li v-for="msg in msgs">
-				    {{ msg.text }}
-				  </li>
-			</ul>
-
-			<div id="input">
-				<textarea v-model="newMsgText" ></textarea><button v-on:click="send" >Enviar</button>
-			</div>
-			Status: {{status}}
-		</div>
-	</fieldset>
+	<div id="app" >
+		<chat v-bind:session="session" channel='Canal3'></chat>
+		<br>
+		<chat v-bind:session="session" channel='Canal2'></chat>
+	</div>
 	{% endraw %}
 </body>
-<script type="text/javascript" src="/static/app.js"></script>
+<script type="text/javascript" src="/static/js/app.js"></script>
 </html>

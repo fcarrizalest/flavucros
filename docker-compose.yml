@@ -8,6 +8,12 @@ services:
       - "5000:5000"
     volumes:
       - ./web:/code
+  vue:
+    build: ./vue
+    volumes:
+      - ./vue/webpack.mix.js:/code/webpack.mix.js
+      - ./vue/src:/code/src
+      - ./web/static:/code/public
   crossbar:
     image: "crossbario/crossbar"
     ports:
