@@ -2,13 +2,15 @@ import Vue from 'vue'
 import axios from 'axios'
 
 import Chat from './components/chat.vue'
+import Register from './components/register.vue'
+import Login from './components/login.vue'
 
 
 window.axios = axios;
 
 window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('auth_token'); 
 
-window.axios.defaults.baseURL = 'http://localhost';
+window.axios.defaults.baseURL = 'http://localhost:5000';
 
 let dataInput = {
 	session : null
@@ -16,7 +18,7 @@ let dataInput = {
 const app = new Vue({
     el: '#app',
     data:dataInput,
-    components:{Chat}
+    components:{Chat,Register,Login}
 });
 
 

@@ -4,6 +4,7 @@ services:
     build: ./web
     depends_on:
       - crossbar
+      - mysql
     ports:
       - "5000:5000"
     volumes:
@@ -14,7 +15,30 @@ services:
       - ./vue/webpack.mix.js:/code/webpack.mix.js
       - ./vue/src:/code/src
       - ./web/static:/code/public
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - mysql
+    environment:
+      PMA_HOSTS: mysql
+      PMA_VERBOSES: local
+    ports:
+     - "8081:80"
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - db_flavucros:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: flavucros
+      MYSQL_USER: flavucros
+      MYSQL_PASSWORD: flavucros!
+    volumes:
+      - ./mysql/db.sql:/docker-entrypoint-initdb.d/db.sql
   crossbar:
     image: "crossbario/crossbar"
     ports:
       - "8080:8080"
+
+volumes:
+  db_flavucros:

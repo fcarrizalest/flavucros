@@ -8,10 +8,14 @@
 </head>
 <body>
 	{% raw %}
+
 	<div id="app" >
+
+		<register></register>
+		<login></login>
+
 		<chat v-bind:session="session" channel='Canal3'></chat>
-		<br>
-		<chat v-bind:session="session" channel='Canal2'></chat>
+		
 	</div>
 	{% endraw %}
 </body>
