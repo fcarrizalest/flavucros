@@ -8,14 +8,15 @@
 </head>
 <body>
 	{% raw %}
-
 	<div id="app" >
+		<div v-if="islogin">
+			<chat v-bind:session="session" v-bind:channelid="channelid" v-bind:channel='channelname'></chat>
+		</div>
+		<div v-else="islogin">
 
-		<register></register>
-		<login></login>
-
-		<chat v-bind:session="session" channel='Canal3'></chat>
-		
+			<register></register>
+			<login v-on:login="check"></login>
+		</div>
 	</div>
 	{% endraw %}
 </body>

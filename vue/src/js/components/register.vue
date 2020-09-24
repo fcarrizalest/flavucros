@@ -6,7 +6,7 @@
             <input type="text" v-model="email" name="email"/>
         </div>
         <div>
-            <input type="text" v-model="password" name="password"/>
+            <input type="password" v-model="password" name="password"/>
         </div>
         
         <button v-on:click="send">Register</button>

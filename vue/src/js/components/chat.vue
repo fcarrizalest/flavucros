@@ -34,19 +34,32 @@
     	},
     	mounted(){
 
-    		console.log(this.session)
+    		console.log('Se muestra');
     	},
     	methods: {
 
     		send: function(event){
 	  			let self = this;
 	  			let chanel = this.channel
-				fetch('/msg', {
-				   method: 'POST',
-				   body: JSON.stringify({ channel:chanel, msg:self.newMsgText})
-				}).then(function(response) { 
-					self.newMsgText = "";
-				});
+
+                axios.post('/msg',{ channel:chanel, msg:self.newMsgText}).then(function (response) {
+                        // handle success
+                        if(response.status == 200){
+                            if(response.data.success){
+                                
+                            }
+                        }
+                        
+                      })
+                      .catch(function (error) {
+                        // handle error
+                        console.log(error);
+                      })
+                      .then(function () {
+                        // always executed
+                      });
+
+				
 			}
   		
 

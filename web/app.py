@@ -124,15 +124,12 @@ def list_channels(request):
 
 @webapp.route('/login', methods=['POST'])
 def do_login(request):
-
-    
     content = json.loads(request.content.read())
     row =session.query(User).filter_by( email = content['email'] ).one_or_none()
-
-    
     error = False
     msg = "KO"
     token = ""
+    success = True
 
 
 
@@ -142,12 +139,14 @@ def do_login(request):
         user = dict(id=row.id, email=row.email)
         user['exp'] = datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
         token = jwt.encode(user , private_key, algorithm='RS256').decode('utf-8')
+        success=True
     else:
         msg = "Email o password incorrectos"
+        success=False
 
 
 
-    response = json.dumps(dict(error=error, msg=msg,token=token), indent=4)
+    response = json.dumps(dict(error=error, msg=msg,token=token,success=success), indent=4)
     return response
 
 
@@ -155,11 +154,9 @@ def do_login(request):
 @webapp.route('/register', methods=['POST'])
 def do_register(request):
     content = json.loads(request.content.read())
-
-   
     msg = "KO"
     error = False
-
+    success = False
     if content['email'] and content['password'] :
         row =session.query(User).filter_by( email = content['email'] ).one_or_none()
         if row is None:
@@ -173,20 +170,13 @@ def do_register(request):
             ed_user = User(email=content['email'],password=password)
             session.add(ed_user)
             session.commit()
-
             msg = "Usuario Registrado"
+            success = True
+        else: 
+            error = "Correo ya Existe"
+            success = False
 
-            
-
-        else:
-            print(row)
-            msg = "Correo ya Existe"
-            error = True
-
-
-
-
-    response = json.dumps(dict(error=error, msg=msg), indent=4)
+    response = json.dumps(dict(error=error, msg=msg, success=success), indent=4)
     return response
 
 
@@ -200,6 +190,8 @@ def do_check(request):
 @webapp.route('/msg', methods=['POST'])
 def do_post(request):
     content = json.loads(request.content.read())
+
+    token = request.requestHeaders.getRawHeaders('authorization')
 
     webapp.msgs.append( dict( text=content["msg"] ) )
     wampapp.session.publish('com.example.msg', webapp.msgs )

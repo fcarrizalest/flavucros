@@ -13,12 +13,51 @@ window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage
 window.axios.defaults.baseURL = 'http://localhost:5000';
 
 let dataInput = {
-	session : null
+	session : null,
+	islogin:false,
+	channelid:1,
+	channelname:"Bienvenida"
 }
 const app = new Vue({
     el: '#app',
     data:dataInput,
-    components:{Chat,Register,Login}
+    components:{Chat,Register,Login},
+    methods:{
+    	check : function(e){
+    		let token = localStorage.getItem('auth_token');
+    		if (token) {
+	            let exp = this.getExpFromToken(token);
+	            let time = new Date();
+	            let now = Math.floor(time.getTime() / 1000);
+	            if (now > exp) {
+	                this.islogin =false;
+	            }else{
+	            	this.islogin = true;
+					axios.defaults.headers.common['Authorization'] = 'Bearer ' + token; 
+					
+	        	}
+        	}
+    	},
+    	getExpFromToken:function(jwtBearer) {
+	        let exp = 0;
+	        if (jwtBearer) {
+	            let jwt = jwtBearer.split('.');
+	            if (jwt.length == 3) {
+	                let expObj = JSON.parse(atob(jwt[1]));
+	                exp = expObj.exp;
+	            }
+	        }
+	        return exp;
+	    }
+
+    },
+    mounted(){
+    	let self = this;
+    	setInterval(function(){
+            self.check();
+        }, 600000);
+        self.check();
+    }
 });
 
 
