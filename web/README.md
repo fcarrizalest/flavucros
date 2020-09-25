@@ -1,6 +1,12 @@
 README.md
 
 
+
+https://github.com/axios/axios
+https://es.vuejs.org/v2/guide/components-custom-events.html
+https://stackoverflow.com/questions/43335477/how-to-use-setinterval-in-vue-component
+
+
 https://klein.readthedocs.io/en/latest/introduction/2-twistdtap.html
 https://github.com/twisted/klein
 

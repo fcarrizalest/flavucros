@@ -82,6 +82,14 @@ class Channel(Base,JsonSerializer):
     description = Column(String)
 
 
+class Msg(Base,JsonSerializer):
+    __tablename__ = 'channel_messages'
+    __json_public__ = ['id','channel_id', 'messages']
+
+    id = Column(Integer,primary_key=True)
+    channel_id = Column(Integer)
+    messages = Column(String)
+
 
 
 # ed_user = User(email='fcarrizales@gmail')
@@ -120,6 +128,82 @@ def list_channels(request):
     for row in session.query(Channel).all():
         channels.append(row.to_json())
     return json.dumps( dict( channels=channels, error=False ) , indent=4)
+
+
+@webapp.route('/channel/<string:chid>/msg', methods=['GET'])
+def do_list_channel(request,chid):
+    
+    error = False
+    msg = ""
+    success = False
+    data = []
+    tokens = request.requestHeaders.getRawHeaders('authorization')
+    
+    try:
+        tokens = tokens[0].split(' ')
+        token = tokens[1]
+        public_key = open('id_rsa.pub').read()
+        payload = jwt.decode(token, public_key, algorithms=['RS256'])
+        print('tengo el token se quien eres ')
+        print(payload)
+
+        rows = session.query(Msg).limit(100).all()
+        data = []
+        for row in rows:
+            data.append(row.to_json())
+
+        #wampapp.session.publish('com.example.%s' % (chid), ms )
+        success=True
+
+        
+    except jwt.exceptions.InvalidTokenError :
+        success = False
+        msg = "TOKEN ERROR"
+
+    
+
+    response = json.dumps(dict(error=error,data=data, msg=msg, success=success), indent=4)
+    return response
+
+@webapp.route('/channel/<string:chid>/msg', methods=['POST'])
+def do_new_post(request,chid):
+    content = json.loads(request.content.read())
+    error = False
+    msg = ""
+    success = False
+
+    tokens = request.requestHeaders.getRawHeaders('authorization')
+    
+    try:
+        tokens = tokens[0].split(' ')
+        token = tokens[1]
+        public_key = open('id_rsa.pub').read()
+        payload = jwt.decode(token, public_key, algorithms=['RS256'])
+        print('tengo el token se quien eres ')
+        print(payload)
+
+        msgNew = Msg(channel_id=chid,messages=content["msg"])
+        session.add(msgNew)
+        session.commit()
+
+        rows = session.query(Msg).limit(100).all()
+
+        ms = []
+        for row in rows:
+            ms.append(row.to_json())
+
+        wampapp.session.publish('com.example.%s' % (chid), ms )
+        success=True
+
+        
+    except jwt.exceptions.InvalidTokenError :
+        success = False
+        msg = "TOKEN ERROR"
+
+    
+
+    response = json.dumps(dict(error=error, msg=msg, success=success), indent=4)
+    return response
 
 
 @webapp.route('/login', methods=['POST'])
