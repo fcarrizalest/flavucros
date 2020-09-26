@@ -88,6 +88,7 @@ class Msg(Base,JsonSerializer):
 
     id = Column(Integer,primary_key=True)
     channel_id = Column(Integer)
+    user_id = Column(Integer)
     messages = Column(String)
 
 
@@ -182,7 +183,7 @@ def do_new_post(request,chid):
         print('tengo el token se quien eres ')
         print(payload)
 
-        msgNew = Msg(channel_id=chid,messages=content["msg"])
+        msgNew = Msg(channel_id=chid,user_id=payload['id'],messages=content["msg"])
         session.add(msgNew)
         session.commit()
 
