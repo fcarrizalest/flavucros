@@ -4,6 +4,7 @@ import axios from 'axios'
 import Chat from './components/chat.vue'
 import Register from './components/register.vue'
 import Login from './components/login.vue'
+import Channels from './components/channels.vue'
 
 
 window.axios = axios;
@@ -21,8 +22,14 @@ let dataInput = {
 const app = new Vue({
     el: '#app',
     data:dataInput,
-    components:{Chat,Register,Login},
+    components:{Chat,Register,Login,Channels},
     methods:{
+    	chanelchange:function(e,chanelId,chanelName){
+    
+    		this.channelid = chanelId;
+    		this.channelname = chanelName;
+
+    	},
     	check : function(e){
     		let token = localStorage.getItem('auth_token');
     		if (token) {

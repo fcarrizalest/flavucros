@@ -1,6 +1,6 @@
 <template>
 	<fieldset>
-		<legend>{{channel}} {{channelid}}</legend>
+		<legend>{{channel}}</legend>
 
 		<ul>
             <li v-for="item in msgs">
@@ -32,15 +32,38 @@
     			console.log(this.channel);
     			let self = this;
     			s.subscribe('com.example.'+this.channelid, function(args){
-    				self.msgs = args[0];
+    				if(args[1] == self.channelid){
+                        self.msgs = args[0];
+                    }
                     console.log(args)
     			});
-    		}
+    		},
+            channelid(newValue,oldValue){
+
+                
+                this.msgs = [];
+                this.updateMsg();
+                let self = this;
+                //this.session.unsubscribe('com.example.'+oldValue)
+                this.session.subscribe('com.example.'+newValue, function(args){
+                    if(args[1] == self.channelid){
+                        self.msgs = args[0];
+                    }
+                    console.log(args)
+                });
+
+            }
 
     	},
     	mounted(){
             let self = this;
-            axios.get('/channel/'+self.channelid+'/msg',{ msg:self.newMsgText}).then(function (response) {
+            self.updateMsg();
+    	},
+    	methods: {
+
+            updateMsg:function(){
+                let self = this;
+                axios.get('/channel/'+self.channelid+'/msg',{ msg:self.newMsgText}).then(function (response) {
                         // handle success
                     if(response.status == 200){
                         if(response.data.success){
@@ -55,11 +78,9 @@
                   })
                   .then(function () {
                     // always executed
-                  });
-    		
-    	},
-    	methods: {
 
+                  });
+            },
     		send: function(event){
 	  			let self = this;
 	  			let chanel = this.channel
@@ -79,18 +100,15 @@
                       })
                       .then(function () {
                         // always executed
+                        self.newMsgText= "";
                       });
-
-				
 			}
-  		
-
     	},
     	data() {
             return {
             	msgs:[],
             	newMsgText:"Escribe el mensaje"
-           //   chanel: '',
+                
            }
         }
     }
