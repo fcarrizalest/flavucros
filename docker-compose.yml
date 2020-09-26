@@ -13,6 +13,7 @@ services:
     build: ./vue
     volumes:
       - ./vue/webpack.mix.js:/code/webpack.mix.js
+      - ./vue/tailwind.config.js:/code/tailwind.config.js
       - ./vue/src:/code/src
       - ./web/static:/code/public
   phpmyadmin:

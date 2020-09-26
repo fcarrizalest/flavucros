@@ -2,24 +2,36 @@
 <html>
 <head>
 	<title></title>
+	<link rel="stylesheet" type="text/css" href="/static/css/style.css">
 	<script type="text/javascript" src="http://localhost:8080/js/autobahn.min.js"></script>
 
 
 </head>
 <body>
 	{% raw %}
-	<div id="app" >
+	<div class="container mx-auto">
+	<div class=""  id="app" >
 		<div v-if="islogin">
-			<channels v-on:chanelchange="chanelchange"></channels>
-			<chat v-bind:session="session" v-bind:channelid="channelid" v-bind:channel='channelname'></chat>
+			<div class="flex mb-4 ">
+			  <div class="w-2/6">
+			  	<channels v-on:chanelchange="chanelchange"></channels>
+			  </div>
+			  <div class="w-4/6">
+			  	<chat v-bind:session="session" v-bind:channelid="channelid" v-bind:channel='channelname'></chat>
+			  </div>
+			</div>
 		</div>
 		<div v-else="islogin">
 
-
-			<register></register>
-			<login v-on:login="check"></login>
+			<div class="md:flex md:items-center">
+	            <div class="md:w-1/2"><register></register></div>
+	            <div class="md:w-2/2"><login v-on:login="check"></login></div>
+            </div>
+			
+			
 		</div>
 	</div>
+</div>
 	{% endraw %}
 </body>
 <script type="text/javascript" src="/static/js/app.js"></script>
