@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="box-border bg-white p-4 border-4 border-gray-400  h-full m-1">
 
     <div class="w-full max-w-xs">
         <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">

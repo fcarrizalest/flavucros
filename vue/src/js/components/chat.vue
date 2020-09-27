@@ -1,22 +1,31 @@
 <template>
-	<fieldset>
-		<legend>{{channel}}</legend>
-
-		<ul>
-            <li v-for="item in msgs">
-                {{item.messages}}
-            </li>
-		</ul>
-
-        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 md:flex md:items-center mb-6 ">
-            <div class="md:w-2/3">
-        		<textarea  class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" v-model="newMsgText"></textarea>
+	<div class="box-border bg-white p-4 border-4 border-gray-400 w-full  h-full m-1">
+		
+        <div class="grid grid-cols-1  w-full  h-full relative">
+            <div class="h-fc overflow-y-auto scrollbar-w-2 scrollbar-track-gray-lighter scrollbar-thumb-rounded scrollbar-thumb-gray scrolling-touch lg:max-h-sm">
+                <div class="mb-10">
+                    <p v-for="item in msgs" class="flex items-center px-2  py-1 hover:text-gray-900  text-gray-600">
+                        {{item.messages}}
+                    </p>
+                </div>
+                
             </div>
-              <div class="md:w-1/3">
-		<button class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" v-on:click="send">Enviar</button>
-    </div>
+            <div class="absolute inset-x-0 bottom-0 h-30 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <div class=" md:flex md:items-center mb-6 ">
+                    <div class="md:w-2/3">
+                        <textarea  class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" v-model="newMsgText"></textarea>
+                    </div>
+                      <div class="md:w-1/3">
+                <button class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" v-on:click="send">Enviar</button>
+            </div>
+                </div>
+
+            </div>
         </div>
-	</fieldset>
+		
+
+        
+	</div>
 </template>
 
 <script>

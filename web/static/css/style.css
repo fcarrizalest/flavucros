@@ -21449,6 +21449,10 @@ video {
           animation:bounce 1s infinite
 }
 
+.h-fc{
+  height:24rem
+}
+
 @media (min-width: 640px){
   .sm\:container{
     width:100%
