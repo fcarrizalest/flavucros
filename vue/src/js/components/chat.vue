@@ -4,7 +4,7 @@
         <div class="overflow-auto col-span-6 bg-white h-64">
 
             <p v-for="item in msgs" class="flex items-center px-2  py-1 hover:text-gray-900  text-gray-600">
-                        {{item.messages}}
+                {{item.created}}        {{item.messages}}
             </p>
 
         </div>

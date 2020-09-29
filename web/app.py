@@ -15,8 +15,9 @@ from autobahn.twisted.wamp import Application
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String,ForeignKey
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import relationship
 
 engine = create_engine('mysql://root:root@mysql/flavucros')
 
@@ -55,6 +56,8 @@ class JsonSerializer(object):
         rv = dict()
         for key in public:
             rv[key] = getattr(self, key)
+            if isinstance(rv[key], datetime.datetime):
+                rv[key] = rv[key].__str__()
         for key, modifier in modifiers.items():
             value = getattr(self, key)
             rv[key] = modifier(value, self)
@@ -85,12 +88,14 @@ class Channel(Base,JsonSerializer):
 
 class Msg(Base,JsonSerializer):
     __tablename__ = 'channel_messages'
-    __json_public__ = ['id','channel_id', 'messages']
+    __json_public__ = ['id','channel_id', 'messages','created']
 
     id = Column(Integer,primary_key=True)
     channel_id = Column(Integer)
-    user_id = Column(Integer)
+    user_id = Column(Integer,ForeignKey('users.id'))
     messages = Column(String)
+    created = Column(String)
+    #user = relationship("User", back_populates="msgs")
 
 
 
